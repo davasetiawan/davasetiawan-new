@@ -22,16 +22,16 @@ Desain terinspirasi estetika *dark-mode* minimalis dengan aksen neon hijau (#b5f
 
 ---
 
-## CMS Admin Tersembunyi
+<!--## CMS Admin Tersembunyi
 
 Semua konten bisa diubah tanpa menyentuh kode.
 
-/**Cara buka:**
-//- Tekan **Ctrl + Shift + A**
-//- Atau ketik `sudo` di keyboard (di luar input form)
-//- Lihat hint di console browser (F12)
+**Cara buka:**
+- Tekan **Ctrl + Shift + A**
+- Atau ketik `sudo` di keyboard (di luar input form)
+- Lihat hint di console browser (F12)
 
-//**Password default:** `admin123` — ganti di tab *Settings* setelah login. */
+**Password default:** `admin123` — ganti di tab *Settings* setelah login.
 
 **Tab Admin:**
 1. **Bio & Hero** — nama, greeting, handle, **foto profil (upload/URL)**, headline hero, sub-headline, headline About, bio, availability, lokasi, email, URL CV, sosial media
@@ -59,7 +59,7 @@ Build produksi:
 npm run build && npm run start
 ```
 
----
+--- -->
 
 ## Struktur Proyek
 
