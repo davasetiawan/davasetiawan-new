@@ -1,0 +1,431 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-sans: "Satoshi", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-display: "Clash Display", "Satoshi", ui-sans-serif, system-ui, sans-serif;
+}
+
+:root {
+  --background: #030303;
+  --foreground: #fafafa;
+  --muted-foreground: #9d9da8;
+  --secondary: #1c1c1f;
+  --surface: #0e0e10;
+  --border: rgba(255, 255, 255, 0.1);
+  --border-strong: rgba(255, 255, 255, 0.18);
+  --highlight: #b5ff6d;
+  --highlight-foreground: #0b1408;
+  --glow: 0 0 15px rgba(181, 255, 109, 0.35);
+  --marquee-bg: #080808;
+}
+
+html.light {
+  --background: #fdfdfb;
+  --foreground: #141416;
+  --muted-foreground: #56565e;
+  --secondary: #f2f2ee;
+  --surface: #ffffff;
+  --border: rgba(0, 0, 0, 0.09);
+  --border-strong: rgba(0, 0, 0, 0.18);
+  --highlight: #15803d;
+  --highlight-foreground: #f2fdf4;
+  --glow: 0 0 15px rgba(21, 128, 61, 0.25);
+  --marquee-bg: #f7f7f3;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  -webkit-font-smoothing: antialiased;
+  transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+section[id] {
+  scroll-margin-top: 6.5rem;
+}
+
+::selection {
+  background: var(--highlight);
+  color: var(--highlight-foreground);
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--background);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--highlight);
+}
+
+.shine-text {
+  background: linear-gradient(
+    120deg,
+    var(--highlight) 40%,
+    #ffffff 50%,
+    var(--highlight) 60%
+  );
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: shine 3s linear infinite;
+}
+
+html.light .shine-text {
+  background: linear-gradient(
+    120deg,
+    var(--highlight) 40%,
+    var(--highlight) 45%,
+    #b5ff6d 50%,
+    var(--highlight) 55%,
+    var(--highlight) 100%
+  );
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+@keyframes shine {
+  0% { background-position: 100% 0; }
+  100% { background-position: -100% 0; }
+}
+
+.marquee-wrap:hover .marquee-track {
+  animation-play-state: paused;
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee-x 32s linear infinite;
+}
+
+@keyframes marquee-x {
+  to { transform: translateX(-50%); }
+}
+
+.tcard {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+}
+
+.tbtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  border: 1px solid var(--border-strong);
+  background: var(--surface);
+  color: var(--foreground);
+  padding: 0.5rem 0.95rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  border-radius: 999px;
+  font-family: inherit;
+  white-space: nowrap;
+}
+.tbtn:hover {
+  border-color: var(--highlight);
+  color: var(--highlight);
+}
+.tbtn-primary {
+  background: var(--highlight);
+  border-color: var(--highlight);
+  color: var(--highlight-foreground);
+}
+.tbtn-primary:hover {
+  color: var(--highlight-foreground);
+  filter: brightness(1.08);
+}
+.tbtn-danger:hover {
+  border-color: #ef4444;
+  color: #ef4444;
+}
+.tbtn-icon {
+  padding: 0.5rem;
+}
+
+.tinput {
+  width: 100%;
+  background: var(--background);
+  border: 1px solid var(--border-strong);
+  color: var(--foreground);
+  border-radius: 0.75rem;
+  padding: 0.62rem 0.85rem;
+  font-size: 0.85rem;
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  font-family: inherit;
+}
+.tinput:focus {
+  border-color: var(--highlight);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--highlight) 22%, transparent);
+}
+.tinput::placeholder {
+  color: var(--muted-foreground);
+  opacity: 0.65;
+}
+
+.tchip {
+  display: inline-block;
+  border: 1px solid color-mix(in srgb, var(--highlight) 38%, transparent);
+  color: var(--highlight);
+  background: color-mix(in srgb, var(--highlight) 10%, transparent);
+  border-radius: 999px;
+  padding: 0.28rem 0.75rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+}
+
+.pcard-scene {
+  perspective: 1400px;
+}
+
+.pcard-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 270px;
+  aspect-ratio: 4 / 5;
+}
+
+@media (min-width: 768px) {
+  .pcard-wrapper {
+    max-width: 380px;
+  }
+}
+
+.pcard-behind {
+  position: absolute;
+  inset: -8%;
+  border-radius: 9999px;
+  background: radial-gradient(
+    circle at 50% 50%,
+    var(--behind-glow-color, rgba(181, 255, 109, 0.5)),
+    transparent 70%
+  );
+  filter: blur(46px);
+  opacity: 0.45;
+  animation: pcard-glow 4.5s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes pcard-glow {
+  0%, 100% { opacity: 0.3; transform: scale(0.96); }
+  50% { opacity: 0.6; transform: scale(1.03); }
+}
+
+.pcard-shell {
+  position: relative;
+  z-index: 1;
+  height: 100%;
+  border-radius: 1.6rem;
+  padding: 2.5px;
+  background: linear-gradient(
+    145deg,
+    color-mix(in srgb, var(--highlight) 60%, #0c120e) 0%,
+    color-mix(in srgb, #71c4ff 30%, transparent) 55%,
+    color-mix(in srgb, var(--highlight) 35%, #101812) 100%
+  );
+  box-shadow: 0 25px 60px -20px rgba(0, 0, 0, 0.65);
+}
+
+.pcard {
+  position: relative;
+  height: 100%;
+  border-radius: calc(1.6rem - 2.5px);
+  overflow: hidden;
+  background: #0a0f0b;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.pcard-shine,
+.pcard-glare {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+
+.pcard:hover .pcard-shine,
+.pcard:hover .pcard-glare {
+  opacity: 1;
+}
+
+.pcard-shine {
+  z-index: 30;
+  background: radial-gradient(
+    circle at var(--mx, 50%) var(--my, 50%),
+    rgba(255, 255, 255, 0.32) 0%,
+    transparent 22%
+  );
+  mix-blend-mode: overlay;
+}
+
+.pcard-glare {
+  z-index: 25;
+  background: radial-gradient(
+    circle at var(--mx, 50%) var(--my, 50%),
+    rgba(255, 255, 255, 0.14) 0%,
+    transparent 55%
+  );
+}
+
+.pcard-details {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  text-align: center;
+  padding: 24px;
+  background: linear-gradient(160deg, #101a13, #0a0f0b);
+}
+
+.pcard-user-info {
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  bottom: 16px;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: 14px;
+  background: rgba(8, 12, 9, 0.55);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+}
+
+.pcard-mini-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  overflow: hidden;
+  flex-shrink: 0;
+  border: 2px solid rgba(255, 255, 255, 0.14);
+}
+
+.pcard-handle {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.2;
+}
+
+.pcard-status {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.7rem;
+  color: #86efac;
+}
+
+.pcard-contact-btn {
+  flex-shrink: 0;
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  background: var(--highlight);
+  color: var(--highlight-foreground);
+  font-weight: 700;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: transform 0.2s ease, filter 0.2s ease;
+}
+.pcard-contact-btn:hover {
+  transform: scale(1.05);
+  filter: brightness(1.08);
+}
+
+.stripes-base {
+  background: repeating-linear-gradient(
+    48deg,
+    transparent 0px,
+    transparent 46px,
+    rgba(255, 255, 255, 0.05) 62px,
+    rgba(255, 255, 255, 0.05) 84px,
+    transparent 100px
+  );
+}
+
+.stripes-lit {
+  background: repeating-linear-gradient(
+    48deg,
+    transparent 0px,
+    transparent 46px,
+    rgba(255, 255, 255, 0.6) 62px,
+    rgba(255, 255, 255, 0.6) 84px,
+    transparent 100px
+  );
+  mask-image: radial-gradient(
+    300px 300px at var(--tx, -600px) var(--ty, -600px),
+    #000 0%,
+    transparent 72%
+  );
+  -webkit-mask-image: radial-gradient(
+    300px 300px at var(--tx, -600px) var(--ty, -600px),
+    #000 0%,
+    transparent 72%
+  );
+  opacity: var(--on, 0);
+  transition: opacity 0.6s ease;
+}
+
+.grain {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
+  opacity: 0.28;
+  mix-blend-mode: overlay;
+}
+
+.tech-fade {
+  mask-image: linear-gradient(
+    90deg,
+    transparent 0,
+    #000 clamp(24px, 8%, 120px),
+    #000 calc(100% - clamp(24px, 8%, 120px)),
+    transparent 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    transparent 0,
+    #000 clamp(24px, 8%, 120px),
+    #000 calc(100% - clamp(24px, 8%, 120px)),
+    transparent 100%
+  );
+}
+
+.tech-track {
+  display: flex;
+  width: max-content;
+  animation: marquee-x 36s linear infinite;
+}
+
+.marquee-wrap:hover .tech-track {
+  animation-play-state: paused;
+}
