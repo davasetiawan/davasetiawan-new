@@ -96,13 +96,13 @@ lib/
 
 ---
 
-## Deploy
+<!--## Deploy
 
 Push ke GitHub → Import di **Vercel** → Deploy (zero config).
 
 > Catatan: karena memakai `localStorage`, perubahan lewat admin hanya tersimpan di browser/perangkat yang digunakan. Untuk sinkron lintas perangkat, migrasikan `lib/store.js` ke Supabase/Firebase — struktur data sudah JSON siap kirim.
 
----
+--- -->
 
 ## Kredit
 
