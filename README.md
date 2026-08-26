@@ -1,27 +1,56 @@
-# Dava Portfolio — Clone syfrsam.space
+# Dava Setiawan — Portfolio
 
-Portfolio satu halaman (single-page scroll) yang **meniru struktur & gaya visual
-[syfrsam.space](https://www.syfrsam.space/)**: banner pengumuman, navbar pill
-dengan glow, hero display raksasa dengan kata ber-highlight neon green, marquee
-layanan, About dengan badge shine + animasi per kata, grid Featured Projects,
-timeline Experience, daftar Awards & Certifications, CTA raksasa "Let's work
-together.", bottom tab bar di mobile, serta dark/light mode.
+Portfolio personal saya yang dibangun dari nol menggunakan **Next.js 15**, **React 19**, **Tailwind CSS 4**, **Framer Motion**, **Lucide Icons**, dan font **Clash Display + Satoshi** (via Fontshare).
 
-Ditambah fitur khusus: **panel admin tersembunyi (CMS)** untuk mengelola semua
-konten tanpa menyentuh kode, **upload foto** (proyek/sertifikat/foto profil)
-langsung dari perangkat, **kartu profil 3D tilt + glare** di About, **marquee
-tech stack berlogo**, dan **efek kursor** (spotlight hero + cincin kustom).
-
-Stack: **Next.js 15 · React 19 · Tailwind CSS 4 · Framer Motion · Lucide Icons ·
-Font Clash Display & Satoshi (Fontshare)**
+Desain terinspirasi estetika *dark-mode* minimalis dengan aksen neon hijau (#b5ff6d), *scanline* CRT halus, dan animasi masuk halus. Saya ingin tampilan yang bersih, cepat, dan terasa "hidup" saat dikunjungi.
 
 ---
 
-## Menjalankan
+## Fitur Utama
+
+| Fitur | Detail |
+|-------|--------|
+| **Hero Interaktif** | Pulsing dot + headline besar dengan kata ber-highlight, social row, tombol *Scroll Down* |
+| **Tech Stack Marquee** | Strip logo bergerak (React, TS, Node.js, Tailwind, PostgreSQL, MongoDB, Docker, Python, Figma, Git, Firebase) — logo warna via devicon CDN, *pause on hover*, *fade edge* |
+| **About dengan Kartu 3D** | Kartu profil *tilt 3D* mengikuti kursor, *shine & glare*, *glow* berdenyut di belakang, overlay info (`@handle`, status *Online*, tombol *Contact Me*) |
+| **Featured Projects** | Grid kartu *hover-glow*, thumbnail, tags chip, link Demo & GitHub, tombol *View All Projects* |
+| **Experience Timeline** | Garis vertikal + node *WORK/EDUCATION*, periode, peran, organisasi, deskripsi |
+| **Certificates** | Baris bernomor + thumbnail klik → *lightbox* pratinjau + tombol *Verify* |
+| **Contact & CTA** | Form kontak (tersimpan ke localStorage), info langsung + sosial media, kartu CTA raksasa *"Let's work together."*, footer copyright + ikon sosial |
+| **Dark / Light Mode** | Toggle di navbar + shortcut `[t]`, preferensi tersimpan `localStorage` |
+| **Efek Kursor** | Spotlight garis diagonal menyala mengikuti kursor di hero + cincin & titik kursor kustom yang membesar di atas elemen interaktif (desktop only) |
+
+---
+
+## CMS Admin Tersembunyi
+
+Semua konten bisa diubah tanpa menyentuh kode.
+
+**Cara buka:**
+- Tekan **Ctrl + Shift + A**
+- Atau ketik `sudo` di keyboard (di luar input form)
+- Lihat hint di console browser (F12)
+
+**Password default:** `admin123` — ganti di tab *Settings* setelah login.
+
+**Tab Admin:**
+1. **Bio & Hero** — nama, greeting, handle, **foto profil (upload/URL)**, headline hero, sub-headline, headline About, bio, availability, lokasi, email, URL CV, sosial media
+2. **Skills & Marquee** — skills chip, **Tech Stack marquee** (`Nama | URL-logo` per baris), kata-kata marquee layanan
+3. **Projects** — CRUD proyek: judul, tahun, deskripsi, tags, **thumbnail (upload/URL)**, demo, GitHub
+4. **Experience** — CRUD timeline: posisi, institusi, periode, tipe *dropdown* (Work/Education), deskripsi
+5. **Certificates** — CRUD sertifikat: nama, penerbit, tanggal, **gambar (upload/URL)** + lightbox, link verifikasi
+6. **Inbox** — pesan masuk dari form kontak (bisa hapus per item / hapus semua)
+7. **Settings** — banner pengumuman atas, ganti password, **Export/Import JSON**, Reset default
+
+Data tersimpan di `localStorage` (key `dava-portfolio:v2`).
+
+---
+
+## Menjalankan Lokal
 
 ```bash
-npm install     # sudah dilakukan
-npm run dev     # buka http://localhost:3000
+npm install
+npm run dev     # http://localhost:3000
 ```
 
 Build produksi:
@@ -32,87 +61,56 @@ npm run build && npm run start
 
 ---
 
-## Panel Admin (CMS)
-
-Tiga cara membuka:
-
-1. Tekan **Ctrl + Shift + A**
-2. Ketik `sudo` di keyboard (di luar form input)
-3. Lihat hint di console browser (F12)
-
-Password default: **`admin123`** — ganti di tab *Settings* setelah login.
-
-### Yang bisa dikelola
-
-| Tab | Isi |
-|---|---|
-| Bio & Hero | Nama, greeting, handle, **foto profil (upload dari perangkat atau URL)**, headline hero (sebelum/highlight/sesudah), sub-headline, headline About, bio, availability, lokasi, email, URL CV, sosial media |
-| Skills & Marquee | Skills chip · **Tech Stack marquee** (format `Nama \| URL-logo` per baris) · kata-kata marquee layanan |
-| Projects | Tambah/edit/hapus proyek: judul, tahun, deskripsi, tags, **thumbnail (upload/URL)**, demo, GitHub |
-| Experience | Timeline kerja/pendidikan: posisi, institusi, periode, tipe (dropdown), deskripsi |
-| Certificates | Nama, penerbit, tanggal, **gambar sertifikat (upload/URL)** dengan lightbox, link verifikasi |
-| Inbox | Pesan masuk dari form kontak |
-| Settings | Banner pengumuman atas, ganti password, Export/Import JSON, Reset default |
-
-Data tersimpan di **localStorage** browser (key `dava-portfolio:v2`).
-
-### Lupa password?
-
-DevTools → Console:
-
-```js
-const d = JSON.parse(localStorage.getItem("dava-portfolio:v2"));
-d.settings.password = "passwordbaru";
-localStorage.setItem("dava-portfolio:v2", JSON.stringify(d));
-location.reload();
-```
-
----
-
-## Struktur Kode
+## Struktur Proyek
 
 ```
 app/
-  layout.js                 HTML root + font Fontshare + script anti-flash tema
-  globals.css               Tema (dark/light), highlight #b5ff6d, shine, marquee,
-                            komponen CSS (.tcard/.tbtn/.tinput/.tchip)
-  page.js                   Entry → render <Portfolio/>
+  layout.js          # Root HTML, font Fontshare, script anti-flash tema
+  globals.css        # Tema dark/light, aksen #b5ff6d, shine, marquee, kartu 3D, garis diagonal, grain
+  page.js            # Entry → render <Portfolio/>
 components/
-  Portfolio.js              Root client: fade-in halaman, scroll-spy,
-                            shortcut admin, wiring modals
-  Navbar.js                 Banner pengumuman (bisa ditutup) + navbar desktop +
-                            header mobile + toggle tema
-  MobileTabBar.js           Bottom tab bar mobile (Home/Proyek/About/Sertifikat/Kontak)
-  Hero.js                   Hero besar + pulsing dot + social row + Scroll Down
-  TechMarquee.js            Marquee layanan (hover pause, klik item → aksen)
-  About.js                  Badge shine + animasi kata + bio
-  ProjectsGrid.js           Grid Featured Projects + View All
-  ExperienceTimeline.js     Timeline vertikal WORK/EDUCATION
-  CertificatesList.js       Baris sertifikat + lightbox pratinjau + verify
-  ContactFooter.js          Form kontak + kartu kontak + CTA raksasa + footer
-  WordReveal.js             Animasi kemunculan per kata
-  SectionBadge.js           Badge pill "✦ LABEL" dengan shine
+  Portfolio.js       # Root client: fade-in, scroll-spy, shortcut admin, modals
+  Navbar.js          # Banner pengumuman + navbar desktop + header mobile + toggle tema
+  MobileTabBar.js    # Bottom tab bar mobile
+  Hero.js            # Hero + StripesBackground (garis diagonal menyala)
+  StripesBackground.js # Efek garis diagonal + spotlight kursor + grain
+  TechLogosMarquee.js# Marquee logo tech stack (pill logo + nama)
+  TechMarquee.js     # Marquee kata layanan (sebelum footer)
+  About.js           # Two-col: kartu profil 3D kiri + teks kanan (badge shine + WordReveal)
+  ProjectsGrid.js    # Grid proyek + View All
+  ExperienceTimeline.js # Timeline vertikal
+  CertificatesList.js # Baris sertifikat + lightbox
+  ContactFooter.js   # Form + info + CTA raksasa + footer
+  WordReveal.js      # Animasi per kata
+  ProfileCard.js     # Kartu 3D tilt + shine/glare + info bar
+  CursorFX.js        # Cincin & titik kursor kustom (desktop)
   admin/
-    AdminAuth.js            Modal login
-    AdminPanel.js           CMS 7 tab
+    AdminAuth.js     # Modal login
+    AdminPanel.js    # CMS 7 tab
+    ImageInput.js    # Upload gambar (FileReader → dataURL, max 1.5 MB)
 lib/
-  seed.js                   Data default — EDIT DI SINI untuk konten awal baru
-  store.js                  Store localStorage + hook useData()
-  nav.js                    Daftar section navigasi
+  seed.js            # Data default — EDIT UNTUK KONTEN AWAL BARU
+  store.js           # Store localStorage + hook useData()
+  nav.js             # Daftar section navigasi
 ```
-
-### Mengganti konten
-
-Cara termudah: buka panel admin dan edit langsung. Untuk mengubah **data
-default** (yang muncul sebelum ada editan), ubah `lib/seed.js`.
-
-> Catatan: karena memakai localStorage, hasil edit admin hanya tersimpan di
-> perangkat/browser tempat Anda mengedit. Untuk sinkron lintas perangkat,
-> migrasikan `lib/store.js` ke Supabase/Firebase — struktur data sudah JSON
-> siap kirim.
 
 ---
 
 ## Deploy
 
-Push ke GitHub → import di [Vercel](https://vercel.com) → deploy (zero config).
+Push ke GitHub → Import di **Vercel** → Deploy (zero config).
+
+> Catatan: karena memakai `localStorage`, perubahan lewat admin hanya tersimpan di browser/perangkat yang digunakan. Untuk sinkron lintas perangkat, migrasikan `lib/store.js` ke Supabase/Firebase — struktur data sudah JSON siap kirim.
+
+---
+
+## Kredit
+
+- Font **Clash Display** & **Satoshi** oleh Indian Type Foundry (Fontshare, free for commercial use)
+- Ikon **Lucide** (MIT)
+- Logo tech stack dari **devicon** (CDN jsdelivr)
+- Inspirasi visual & interaksi: portfolio-modern dark-mode patterns
+
+---
+
+**Dibangun oleh Dava Setiawan** — 2025

@@ -27,7 +27,7 @@ export default function CursorFX() {
       const target = e.target;
       setHovering(
         target instanceof Element &&
-          !!target.closest("a, button, input, textarea, select, [role='button']")
+        !!target.closest("a, button, input, textarea, select, [role='button']")
       );
     };
     const onLeave = () => setVisible(false);
