@@ -22,7 +22,7 @@ export default function WordReveal({ text, className }) {
       variants={parent}
       initial="hidden"
       whileInView="show"
-      viewport={{ once: true, margin: "-80px" }}
+      viewport={{ once: true, amount: 0.2 }}
       className={className}
     >
       {words.map((word, i) => (

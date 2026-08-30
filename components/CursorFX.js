@@ -1,12 +1,14 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, useMotionValue, useSpring } from "framer-motion";
+import { useCursorContext } from "./CursorContext";
 
 export default function CursorFX() {
   const [enabled, setEnabled] = useState(false);
   const [visible, setVisible] = useState(false);
   const [hovering, setHovering] = useState(false);
+  const { isOverUI } = useCursorContext();
 
   const x = useMotionValue(-100);
   const y = useMotionValue(-100);
@@ -51,7 +53,7 @@ export default function CursorFX() {
       >
         <motion.div
           animate={{
-            opacity: visible ? 1 : 0,
+            opacity: visible && !isOverUI ? 1 : 0,
             scale: hovering ? 1.7 : 1,
           }}
           transition={{ duration: 0.18 }}
@@ -65,7 +67,7 @@ export default function CursorFX() {
         style={{ x, y }}
       >
         <motion.div
-          animate={{ opacity: visible ? 1 : 0 }}
+          animate={{ opacity: visible && !isOverUI ? 1 : 0 }}
           transition={{ duration: 0.12 }}
           className="-ml-[3px] -mt-[3px] h-1.5 w-1.5 rounded-full bg-[var(--highlight)] shadow-[0_0_10px_var(--highlight)]"
         />

@@ -29,7 +29,7 @@ export default function CertificatesList() {
   }, [preview]);
 
   return (
-    <section id="certificates" className="container mx-auto border-t border-[var(--border)] px-6 pb-24 pt-24 md:pt-28">
+    <section id="certificates" className="mx-auto w-full max-w-[1536px] px-6 md:px-12 border-t border-[var(--border)] pb-24 pt-24 md:pt-28">
       <div className="mb-14 flex flex-col items-center text-center">
         <div className="mb-4">
           <SectionBadge text="Recognition" icon={Trophy} />
@@ -53,7 +53,7 @@ export default function CertificatesList() {
               key={item.id}
               initial={{ opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-40px" }}
+              viewport={{ once: true, amount: 0.15 }}
               transition={{ duration: 0.4, delay: index * 0.04 }}
               className="group flex items-center gap-4 py-6 md:gap-8 md:py-8"
             >

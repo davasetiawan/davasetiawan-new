@@ -58,7 +58,7 @@ export default function ContactFooter() {
 
   return (
     <section id="contact" className="border-t border-[var(--border)] pb-40 pt-24 md:pb-12">
-      <div className="container mx-auto px-6">
+      <div className="mx-auto w-full max-w-[1536px] px-6 md:px-12">
         <div className="mb-20 grid gap-10 lg:grid-cols-2">
           <div className="rounded-3xl border border-[var(--border)] bg-[color-mix(in_srgb,var(--secondary)_45%,transparent)] p-6 md:p-8">
             <h3 className="font-display text-2xl font-medium">Kirim Pesan</h3>

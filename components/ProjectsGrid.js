@@ -11,7 +11,7 @@ function ProjectCard({ project, index }) {
     <motion.article
       initial={{ opacity: 0, y: 28 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-60px" }}
+      viewport={{ once: true, amount: 0.15 }}
       transition={{ duration: 0.5, delay: (index % 2) * 0.08 }}
       className="group flex flex-col overflow-hidden rounded-3xl border border-[var(--border)] bg-[var(--surface)] transition-all duration-300 hover:border-[color-mix(in_srgb,var(--highlight)_45%,transparent)] hover:shadow-[0_0_35px_-12px_var(--highlight)]"
     >
@@ -73,7 +73,7 @@ export default function ProjectsGrid() {
   const visible = expanded ? projects : projects.slice(0, 4);
 
   return (
-    <section id="projects" className="container relative z-10 mx-auto px-6 py-20 md:py-24">
+    <section id="projects" className="mx-auto w-full max-w-[1536px] px-6 md:px-12 relative z-10 py-20 md:py-24">
       <div className="mb-12 flex flex-col justify-between gap-6 md:flex-row md:items-end">
         <div className="flex flex-col gap-4">
           <SectionBadge text="Selected Works" align="left" />

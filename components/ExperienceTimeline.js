@@ -10,7 +10,7 @@ export default function ExperienceTimeline() {
   const items = data.experience || [];
 
   return (
-    <section id="experience" className="container mx-auto px-6 py-24 md:py-32">
+    <section id="experience" className="mx-auto w-full max-w-[1536px] px-6 md:px-12 py-24 md:py-32">
       <div className="mb-20 flex flex-col items-center text-center md:mb-24">
         <div className="mb-4">
           <SectionBadge text="Career Path" />
@@ -41,7 +41,7 @@ export default function ExperienceTimeline() {
                 key={item.id}
                 initial={{ opacity: 0, x: -20 }}
                 whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true, margin: "-60px" }}
+                viewport={{ once: true, amount: 0.15 }}
                 transition={{ duration: 0.45, delay: index * 0.05 }}
                 className="relative pl-16"
               >

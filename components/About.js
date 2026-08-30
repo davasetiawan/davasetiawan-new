@@ -9,11 +9,12 @@ import { useData } from "../lib/store";
 export default function About() {
   const data = useData();
   const p = data.profile;
+  const techStack = data.techStack || [];
 
   return (
     <section
       id="about"
-      className="container mx-auto px-6 pb-12 pt-24 md:pb-20 md:pt-32"
+      className="mx-auto w-full max-w-[1536px] px-6 md:px-12 pb-12 pt-24 md:pb-20 md:pt-32"
     >
       <div className="flex flex-col-reverse items-center gap-10 lg:flex-row lg:gap-24">
         <div className="flex w-full justify-center lg:w-1/3 lg:justify-end">
@@ -43,19 +44,37 @@ export default function About() {
           <motion.p
             initial={{ opacity: 0, y: 18 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-60px" }}
+            viewport={{ once: true, amount: 0.2 }}
             transition={{ duration: 0.6 }}
             className="whitespace-pre-line text-base leading-relaxed text-[var(--muted-foreground)] md:text-lg"
           >
             {p.bio}
           </motion.p>
 
+          {/* Tech Stack Chips with Logos */}
+          {techStack.length > 0 ? (
+            <div className="flex flex-wrap items-center justify-center gap-2 pt-2 lg:justify-start">
+              {techStack.map((tech, i) => (
+                <div
+                  key={tech.name + i}
+                  className="flex items-center gap-2 rounded-full border border-[var(--border)] bg-[var(--surface)] px-3.5 py-1.5 text-xs font-medium text-[var(--foreground)] shadow-sm"
+                >
+                  {tech.logoUrl ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={tech.logoUrl} alt="" className="h-4 w-4 object-contain" />
+                  ) : null}
+                  <span>{tech.name}</span>
+                </div>
+              ))}
+            </div>
+          ) : null}
+
           <motion.div
             initial={{ opacity: 0, y: 14 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            viewport={{ once: true, amount: 0.2 }}
             transition={{ duration: 0.5, delay: 0.1 }}
-            className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm text-[var(--muted-foreground)] lg:justify-start"
+            className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 pt-2 text-sm text-[var(--muted-foreground)] lg:justify-start"
           >
             <span className="flex items-center gap-2">
               <MapPin size={14} className="text-[var(--highlight)]" />
