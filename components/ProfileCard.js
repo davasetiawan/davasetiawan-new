@@ -78,7 +78,7 @@ export default function ProfileCard({ photoUrl, handle, name, role }) {
                 </div>
               </div>
               <a href="#contact">
-                <button type="button" className="pcard-contact-btn">
+                <button type="button" suppressHydrationWarning className="pcard-contact-btn">
                   Contact Me
                 </button>
               </a>

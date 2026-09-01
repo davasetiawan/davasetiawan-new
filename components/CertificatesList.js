@@ -62,6 +62,7 @@ export default function CertificatesList() {
               </span>
 
               <button
+                suppressHydrationWarning
                 onClick={() => setPreview(item)}
                 title="Klik untuk pratinjau"
                 className="aspect-[4/3] w-24 shrink-0 cursor-zoom-in overflow-hidden rounded-xl border border-[var(--border)] sm:w-32 md:w-40"
@@ -81,7 +82,7 @@ export default function CertificatesList() {
                   {item.issuer} · {formatDate(item.date)}
                 </p>
                 <div className="mt-3 flex items-center gap-2 lg:hidden">
-                  <button onClick={() => setPreview(item)} className="tbtn text-xs">
+                  <button suppressHydrationWarning onClick={() => setPreview(item)} className="tbtn text-xs">
                     <Eye size={13} /> Preview
                   </button>
                   {item.verifyUrl ? (
@@ -93,7 +94,7 @@ export default function CertificatesList() {
               </div>
 
               <div className="hidden shrink-0 items-center gap-2 lg:flex">
-                <button onClick={() => setPreview(item)} className="tbtn text-xs">
+                <button suppressHydrationWarning onClick={() => setPreview(item)} className="tbtn text-xs">
                   <Eye size={13} /> Preview
                 </button>
                 {item.verifyUrl ? (
@@ -130,6 +131,7 @@ export default function CertificatesList() {
                   ~/certificates/{preview.name.toLowerCase().replace(/\s+/g, "-")}.png
                 </span>
                 <button
+                  suppressHydrationWarning
                   onClick={() => setPreview(null)}
                   aria-label="Tutup"
                   className="rounded-full p-1 text-[var(--muted-foreground)] transition-colors hover:bg-white/10 hover:text-[var(--highlight)]"

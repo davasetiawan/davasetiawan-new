@@ -352,26 +352,22 @@ function BioHeroEditor() {
 
 function SkillsMarqueeEditor() {
   const data = useData();
-  const [skillsText, setSkillsText] = useState(() => (data.skills || []).join("\n"));
-  const [marqueeText, setMarqueeText] = useState(() => (data.marquee || []).join("\n"));
-  const [techText, setTechText] = useState(() =>
-    (data.techStack || []).map((t) => `${t.name} | ${t.logoUrl}`).join("\n")
-  );
+  const [itemsText, setItemsText] = useState(() => {
+    const items = data.techStack?.length
+      ? data.techStack.map((tech) => tech.name)
+      : data.skills?.length
+        ? data.skills
+        : data.marquee || [];
+    return [...new Set(items)].join("\n");
+  });
   const [saved, setSaved] = useState(false);
 
   const save = () => {
+    const items = [...new Set(itemsText.split("\n").map((item) => item.trim()).filter(Boolean))];
     store.update((d) => {
-      d.skills = [...new Set(skillsText.split("\n").map((s) => s.trim()).filter(Boolean))];
-      d.marquee = [...new Set(marqueeText.split("\n").map((s) => s.trim()).filter(Boolean))];
-      d.techStack = techText
-        .split("\n")
-        .map((line) => line.trim())
-        .filter(Boolean)
-        .map((line) => {
-          const [name, logoUrl] = line.split("|").map((part) => part.trim());
-          return { name: name || "", logoUrl: logoUrl || "" };
-        })
-        .filter((t) => t.name);
+      d.skills = items;
+      d.marquee = items;
+      d.techStack = items.map((name) => ({ name }));
       return d;
     });
     setSaved(true);
@@ -380,15 +376,12 @@ function SkillsMarqueeEditor() {
 
   return (
     <div className="flex flex-col gap-5">
-      <h3 className="font-display text-base font-semibold">SKILLS &amp; MARQUEE</h3>
-      <Field label="Skills (satu per baris)">
-        <textarea rows={9} className="tinput resize-y" value={skillsText} onChange={(e) => setSkillsText(e.target.value)} />
-      </Field>
-      <Field label="Tech Stack Marquee (format: Nama | URL-logo, satu per baris)">
-        <textarea rows={7} className="tinput resize-y" value={techText} onChange={(e) => setTechText(e.target.value)} />
-      </Field>
-      <Field label="Kata-kata marquee layanan (satu per baris)">
-        <textarea rows={5} className="tinput resize-y" value={marqueeText} onChange={(e) => setMarqueeText(e.target.value)} />
+      <h3 className="font-display text-base font-semibold">TECH STACK</h3>
+      <p className="text-sm leading-relaxed text-[var(--muted-foreground)]">
+        Satu daftar dipakai untuk skills dan kedua marquee. Masukkan satu teknologi atau keahlian per baris; logo teknologi populer muncul otomatis.
+      </p>
+      <Field label="Tech & Skills (satu per baris)">
+        <textarea rows={14} className="tinput resize-y" value={itemsText} onChange={(e) => setItemsText(e.target.value)} />
       </Field>
       <div className="flex items-center gap-3">
         <button className="tbtn tbtn-primary" onClick={save}>

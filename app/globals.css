@@ -78,11 +78,6 @@ body {
   --pointer-y: 35vh;
 }
 
-main > *:not(.ambient-background) {
-  position: relative;
-  z-index: 1;
-}
-
 .ambient-grid {
   position: absolute;
   inset: 0;

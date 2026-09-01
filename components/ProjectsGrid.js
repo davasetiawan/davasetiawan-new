@@ -104,6 +104,7 @@ export default function ProjectsGrid() {
         <div className="mt-24 flex justify-center">
           {!expanded ? (
             <button
+              suppressHydrationWarning
               onClick={() => setExpanded(true)}
               className="h-16 rounded-full border border-[var(--border-strong)] bg-[var(--background)] px-12 font-display text-lg font-medium shadow-sm transition-all hover:border-[var(--highlight)] hover:bg-[var(--highlight)] hover:text-[var(--highlight-foreground)]"
             >

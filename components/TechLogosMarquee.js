@@ -3,19 +3,39 @@
 import { useState } from "react";
 import { useData } from "../lib/store";
 
+const DEVICON_ALIASES = {
+  "next.js": "nextjs",
+  "next js": "nextjs",
+  "node.js": "nodejs",
+  "node js": "nodejs",
+  "react js": "react",
+  "vue.js": "vuejs",
+  "vue js": "vuejs",
+  "tailwind css": "tailwindcss",
+  "github": "github",
+  "git & github": "git",
+  "figma": "figma",
+  "firebase": "firebase",
+  "postgresql": "postgresql",
+  "postgres": "postgresql",
+  "mongodb": "mongodb",
+  "mongo db": "mongodb",
+  "typescript": "typescript",
+  "javascript": "javascript",
+  "python": "python",
+  "docker": "docker",
+  "prisma": "prisma",
+};
+
+function logoUrl(name) {
+  const normalized = name.toLowerCase().replace(/[._-]/g, " ").replace(/\s+/g, " ").trim();
+  const icon = DEVICON_ALIASES[normalized] || normalized.replace(/\s/g, "");
+  return `https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/${icon}/${icon}-original.svg`;
+}
+
 function TechPill({ item }) {
   const [broken, setBroken] = useState(false);
-  
-  // Normalisasi keyword untuk URL devicon
-  const keyword = item.name.toLowerCase()
-    .replace(/\s+/g, '')
-    .replace(/\.js/g, 'js')
-    .replace(/node/g, 'nodejs')
-    .replace(/react/g, 'react')
-    .replace(/tailwind/g, 'tailwindcss');
-
-  const autoLogoUrl = `https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/${keyword}/${keyword}-original.svg`;
-  const finalUrl = item.logoUrl || autoLogoUrl;
+  const finalUrl = logoUrl(item.name);
 
   return (
     <li className="mr-6 flex-none leading-none">

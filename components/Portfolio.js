@@ -91,33 +91,27 @@ export default function Portfolio() {
     <main className="relative z-0 min-h-screen w-full overflow-x-hidden bg-transparent text-[var(--foreground)] transition-colors duration-500">
       <FloatingDots />
       <Navbar active={active} />
-      
-      <div id="home">
-        <Hero />
-      </div>
-      
-      <TechLogosMarquee />
-      
-      <div id="about">
-        <About />
-      </div>
-      
-      <div id="projects">
-        <ProjectsGrid />
-      </div>
-      
-      <div id="experience">
-        <ExperienceTimeline />
-      </div>
-      
-      <div id="certificates">
-        <CertificatesList />
-      </div>
-      
-      <TechMarquee />
-      
-      <div id="contact">
-        <ContactFooter />
+      <div className="relative z-10">
+        <div id="home">
+          <Hero />
+        </div>
+        <TechLogosMarquee />
+        <div id="about">
+          <About />
+        </div>
+        <div id="projects">
+          <ProjectsGrid />
+        </div>
+        <div id="experience">
+          <ExperienceTimeline />
+        </div>
+        <div id="certificates">
+          <CertificatesList />
+        </div>
+        <TechMarquee />
+        <div id="contact">
+          <ContactFooter />
+        </div>
       </div>
       
       <MobileTabBar active={active} />

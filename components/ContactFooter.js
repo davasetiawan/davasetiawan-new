@@ -69,12 +69,14 @@ export default function ContactFooter() {
             <form onSubmit={submit} className="mt-6 flex flex-col gap-4">
               <div className="grid gap-4 sm:grid-cols-2">
                 <input
+                  suppressHydrationWarning
                   className="tinput"
                   placeholder="Nama kamu"
                   value={form.name}
                   onChange={(e) => setForm({ ...form, name: e.target.value })}
                 />
                 <input
+                  suppressHydrationWarning
                   type="email"
                   className="tinput"
                   placeholder="nama@domain.com"
@@ -83,6 +85,7 @@ export default function ContactFooter() {
                 />
               </div>
               <textarea
+                suppressHydrationWarning
                 rows={5}
                 className="tinput resize-y"
                 placeholder="Halo Dava, saya tertarik untuk..."
@@ -99,7 +102,7 @@ export default function ContactFooter() {
                 </p>
               ) : null}
 
-              <button type="submit" className="tbtn tbtn-primary self-start px-6 py-3">
+              <button type="submit" suppressHydrationWarning className="tbtn tbtn-primary self-start px-6 py-3">
                 <Send size={14} /> Kirim Pesan
               </button>
             </form>

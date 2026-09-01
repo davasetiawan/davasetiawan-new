@@ -309,6 +309,9 @@
   .inset-0 {
     inset: 0px;
   }
+  .inset-x-0 {
+    inset-inline: 0px;
+  }
   .top-0 {
     top: 0px;
   }
@@ -684,6 +687,9 @@
   .max-w-\[270px\] {
     max-width: 270px;
   }
+  .max-w-\[1280px\] {
+    max-width: 1280px;
+  }
   .max-w-\[1536px\] {
     max-width: 1536px;
   }
@@ -968,6 +974,18 @@
     border-color: color-mix(in srgb, #fff 10%, transparent);
     @supports (color: color-mix(in lab, red, red)) {
       border-color: color-mix(in oklab, var(--color-white) 10%, transparent);
+    }
+  }
+  .bg-\[color-mix\(in_srgb\,var\(--background\)_72\%\,transparent\)\] {
+    background-color: var(--background);
+    @supports (color: color-mix(in lab, red, red)) {
+      background-color: color-mix(in srgb,var(--background) 72%,transparent);
+    }
+  }
+  .bg-\[color-mix\(in_srgb\,var\(--background\)_80\%\,transparent\)\] {
+    background-color: var(--background);
+    @supports (color: color-mix(in lab, red, red)) {
+      background-color: color-mix(in srgb,var(--background) 80%,transparent);
     }
   }
   .bg-\[color-mix\(in_srgb\,var\(--background\)_92\%\,transparent\)\] {
@@ -1987,6 +2005,18 @@
       line-height: var(--tw-leading, var(--text-9xl--line-height));
     }
   }
+  @media (width >= 80rem) {
+    .xl\:inline {
+      display: inline;
+    }
+    .xl\:px-3 {
+      padding-inline: calc(var(--spacing) * 3);
+    }
+    .xl\:text-sm {
+      font-size: var(--text-sm);
+      line-height: var(--tw-leading, var(--text-sm--line-height));
+    }
+  }
   .dark\:block:where(.dark, .dark *) {
     display: block;
   }
@@ -2059,10 +2089,6 @@ body {
   background: transparent;
   --pointer-x: 50vw;
   --pointer-y: 35vh;
-}
-main > *:not(.ambient-background) {
-  position: relative;
-  z-index: 1;
 }
 .ambient-grid {
   position: absolute;

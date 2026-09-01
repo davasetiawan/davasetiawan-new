@@ -1,10 +1,40 @@
 "use client";
 
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { Mail, MapPin } from "lucide-react";
 import WordReveal from "./WordReveal";
 import ProfileCard from "./ProfileCard";
 import { useData } from "../lib/store";
+
+const DEVICON_ALIASES = {
+  "next.js": "nextjs",
+  "next js": "nextjs",
+  "node.js": "nodejs",
+  "node js": "nodejs",
+  "react js": "react",
+  "tailwind css": "tailwindcss",
+  postgres: "postgresql",
+  "mongo db": "mongodb",
+  "git & github": "git",
+};
+
+function TechChip({ tech }) {
+  const [broken, setBroken] = useState(false);
+  const normalized = tech.name.toLowerCase().replace(/[._-]/g, " ").replace(/\s+/g, " ").trim();
+  const icon = DEVICON_ALIASES[normalized] || normalized.replace(/\s/g, "");
+  const logoUrl = `https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/${icon}/${icon}-original.svg`;
+
+  return (
+    <div className="flex items-center gap-2 rounded-full border border-[var(--border)] bg-[var(--surface)] px-3.5 py-1.5 text-xs font-medium text-[var(--foreground)] shadow-sm">
+      {!broken ? (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img src={logoUrl} alt="" onError={() => setBroken(true)} className="h-4 w-4 object-contain" />
+      ) : null}
+      <span>{tech.name}</span>
+    </div>
+  );
+}
 
 export default function About() {
   const data = useData();
@@ -55,16 +85,7 @@ export default function About() {
           {techStack.length > 0 ? (
             <div className="flex flex-wrap items-center justify-center gap-2 pt-2 lg:justify-start">
               {techStack.map((tech, i) => (
-                <div
-                  key={tech.name + i}
-                  className="flex items-center gap-2 rounded-full border border-[var(--border)] bg-[var(--surface)] px-3.5 py-1.5 text-xs font-medium text-[var(--foreground)] shadow-sm"
-                >
-                  {tech.logoUrl ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img src={tech.logoUrl} alt="" className="h-4 w-4 object-contain" />
-                  ) : null}
-                  <span>{tech.name}</span>
-                </div>
+                <TechChip key={tech.name + i} tech={tech} />
               ))}
             </div>
           ) : null}
