@@ -59,7 +59,7 @@ export default function About() {
 
         <div className="w-full space-y-6 text-center md:space-y-8 lg:w-2/3 lg:text-left">
           <div className="mb-2 flex items-center justify-center gap-2 lg:justify-start">
-            <span className="animate-pulse text-xl text-[var(--highlight)]">✦</span>
+           
             <span className="shine-text font-display text-xs font-medium uppercase tracking-[0.2em]">
               About Me
             </span>
@@ -82,14 +82,7 @@ export default function About() {
             {p.bio}
           </motion.p>
 
-          {/* Tech Stack Chips with Logos */}
-          {techStack.length > 0 ? (
-            <div className="flex flex-wrap items-center justify-center gap-2 pt-2 lg:justify-start">
-              {techStack.map((tech, i) => (
-                <TechChip key={tech.name + i} tech={tech} />
-              ))}
-            </div>
-          ) : null}
+         
 
           <motion.div
             initial={{ opacity: 0, y: 14 }}

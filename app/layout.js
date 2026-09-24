@@ -1,11 +1,11 @@
 import "./globals.css";
 
 export const metadata = {
-  title: "Dava Setiawan | Full-Stack Developer & Creative Developer",
+  title: "Dava Setiawan | Web Developer",
   description:
-    "Portfolio resmi Dava Setiawan. Spesialis Full-Stack Development dan Creative Developer — membangun pengalaman digital yang estetis, cepat, dan berpusat pada pengguna.",
+    "Portfolio resmi Dava Setiawan. Spesialis Web Development — membangun pengalaman digital yang estetis, cepat, dan berpusat pada pengguna.",
   keywords: [
-    "Dava Setiawan", "Portfolio", "Full-Stack Developer",
+    "Dava Setiawan", "Portfolio", "Web Developer",
     "Creative Developer", "Web Developer Indonesia",
   ],
 };

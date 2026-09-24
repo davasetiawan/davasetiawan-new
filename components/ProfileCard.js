@@ -71,19 +71,7 @@ export default function ProfileCard({ photoUrl, handle, name, role }) {
                 className="absolute inset-0 h-full w-full rounded-[calc(1.6rem-2.5px)] overflow-hidden bg-[#0a0f0b] [backface-visibility:hidden] [WebkitBackfaceVisibility:hidden]"
                 style={{ transform: "rotateY(0deg)" }}
               >
-                {/* Flip Indicator Badge */}
-                <button
-                  type="button"
-                  suppressHydrationWarning
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setIsFlipped(true);
-                  }}
-                  className="absolute top-3 right-3 z-30 flex items-center gap-1 rounded-full bg-black/60 backdrop-blur-md px-2.5 py-1 font-mono text-[10px] tracking-wider text-white/90 border border-white/20 hover:border-white/50 transition-all shadow-md"
-                  title="Flip Card"
-                >
-                  <RotateCw size={11} /> FLIP
-                </button>
+             
 
                 <div className="pcard-details">
                   <h3 className="font-display text-2xl font-semibold text-white">{name}</h3>
@@ -136,9 +124,7 @@ export default function ProfileCard({ photoUrl, handle, name, role }) {
               >
                 {/* Header */}
                 <div className="flex items-center justify-between">
-                  <span className="font-mono text-[10px] tracking-widest text-[var(--highlight)] uppercase flex items-center gap-1 font-medium">
-                    <Sparkles size={12} /> PROFILE CARD
-                  </span>
+                 
                   <button
                     type="button"
                     suppressHydrationWarning
