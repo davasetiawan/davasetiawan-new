@@ -196,14 +196,6 @@ const DriftWall = ({
           y: (e.clientY - rect.top) / rect.height - 0.5
         };
       }
-      const hit = document.elementFromPoint(e.clientX, e.clientY);
-      const tile = hit && hit.closest ? hit.closest('[data-tile-id]') : null;
-      if (!tile) return;
-      const id = tile.dataset.tileId;
-      if (id === activeIdRef.current) return;
-      activeIdRef.current = id;
-      hoveredColRef.current = Number(tile.dataset.col);
-      setActiveId(id);
     },
     [parallax, reduced]
   );
@@ -213,10 +205,6 @@ const DriftWall = ({
     pointerRef.current = { x: 0, y: 0 };
     release();
   }, [release]);
-
-  const maskStyle =
-    'radial-gradient(ellipse 78% 82% at 50% 46%, #000 var(--dw-edge), transparent 100%), ' +
-    'linear-gradient(to top, #000 var(--dw-edge), transparent 100%)';
 
   const cssVars = useMemo(
     () => ({
@@ -228,16 +216,11 @@ const DriftWall = ({
       '--dw-dim': dim,
       '--dw-gray': grayscale ? 1 : 0,
       '--dw-overlay': overlayColor,
-      '--dw-edge': `${Math.max(0, (1 - fade) * 100)}%`,
       perspective: `${perspective}px`,
       perspectiveOrigin: '50% 50%',
-      WebkitMaskImage: maskStyle,
-      maskImage: maskStyle,
-      WebkitMaskComposite: 'source-in',
-      maskComposite: 'intersect',
       ...style
     }),
-    [tileWidth, tileHeight, gap, radius, lift, dim, grayscale, overlayColor, fade, perspective, maskStyle, style]
+    [tileWidth, tileHeight, gap, radius, lift, dim, grayscale, overlayColor, perspective, style]
   );
 
   const tileClass = cx(
@@ -248,6 +231,8 @@ const DriftWall = ({
     'pointer-events-none absolute inset-[calc(var(--dw-gap)/2)] block overflow-hidden bg-[#0b0b12]',
     'rounded-[var(--dw-radius)] opacity-[var(--dw-dim)] [transform:translateZ(0)]',
     'transition-[transform,opacity,box-shadow] duration-[420ms] ease-[cubic-bezier(0.22,1,0.36,1)]',
+    'group-hover/tile:opacity-100 group-hover/tile:[transform:translateZ(var(--dw-lift))]',
+    'group-hover/tile:shadow-[0_24px_60px_-18px_rgba(0,0,0,0.7)]',
     'group-[.is-active]/tile:opacity-100 group-[.is-active]/tile:[transform:translateZ(var(--dw-lift))]',
     'group-[.is-active]/tile:shadow-[0_24px_60px_-18px_rgba(0,0,0,0.7)]',
     'group-focus-visible/tile:opacity-100 group-focus-visible/tile:[transform:translateZ(var(--dw-lift))]',
@@ -257,11 +242,13 @@ const DriftWall = ({
     'block h-full w-full select-none object-cover',
     '[filter:grayscale(var(--dw-gray))_saturate(0.92)]',
     'transition-[filter] duration-[420ms] ease-[cubic-bezier(0.22,1,0.36,1)]',
+    'group-hover/tile:[filter:grayscale(0)_saturate(1.05)]',
     'group-[.is-active]/tile:[filter:grayscale(0)_saturate(1.05)] group-focus-visible/tile:[filter:grayscale(0)_saturate(1.05)]'
   );
   const overlayClass = cx(
     'pointer-events-none absolute inset-0 bg-[var(--dw-overlay)] opacity-[0.42]',
     'transition-opacity duration-[420ms] ease-[cubic-bezier(0.22,1,0.36,1)]',
+    'group-hover/tile:opacity-0',
     'group-[.is-active]/tile:opacity-0 group-focus-visible/tile:opacity-0'
   );
 
@@ -322,6 +309,9 @@ const DriftWall = ({
       role="group"
       aria-label="Drifting wall of tiles"
     >
+      {/* Vignette overlay */}
+      <div className="pointer-events-none absolute inset-0 z-20 bg-[radial-gradient(ellipse_80%_80%_at_50%_50%,transparent_35%,#000000_100%)]" />
+
       <div
         ref={planeRef}
         className="absolute left-1/2 top-1/2 flex cursor-pointer flex-row [transform-style:preserve-3d] [transform-origin:50%_50%] will-change-transform"
