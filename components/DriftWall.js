@@ -106,8 +106,11 @@ const DriftWall = ({
   }, [columnItems, speed, direction, variance]);
 
   useEffect(() => {
-    offsetsRef.current = columnMeta.map((meta, c) => meta.copyHeight * ((c * 0.37) % 1));
-    velocitiesRef.current = columnItems.map(() => 0);
+    // Only reset offsets if they haven't been initialized yet or columnMeta length changes
+    if (offsetsRef.current.length !== columnMeta.length) {
+      offsetsRef.current = columnMeta.map((meta, c) => meta.copyHeight * ((c * 0.37) % 1));
+      velocitiesRef.current = columnItems.map(() => 0);
+    }
   }, [columnMeta, columnItems]);
 
   const applyPlaneTransform = useCallback(
@@ -277,10 +280,10 @@ const DriftWall = ({
         <img
           src={item.image}
           alt={item.title ?? ''}
-          loading="lazy"
+          loading="eager"
           decoding="async"
           draggable={false}
-          className={tileImgClass}
+          className={cx(tileImgClass, '[backface-visibility:hidden] [transform:translateZ(0)]')}
         />
         <span className={overlayClass} aria-hidden="true" />
       </span>

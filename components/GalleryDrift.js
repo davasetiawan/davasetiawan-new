@@ -1,12 +1,15 @@
 "use client";
 
 import SectionBadge from "./SectionBadge";
-import DriftWall from "./DriftWall";
+import { useMemo } from "react";
 import { useData } from "../lib/store";
 
 export default function GalleryDrift() {
   const data = useData();
-  const galleryItems = data?.gallery && data.gallery.length > 0 ? data.gallery : [];
+  const rawGallery = data?.gallery;
+  const galleryItems = useMemo(() => {
+    return rawGallery && rawGallery.length > 0 ? rawGallery : [];
+  }, [JSON.stringify(rawGallery)]);
 
   return (
     <section id="gallery" className="mx-auto w-full max-w-[1536px] px-6 md:px-12 relative z-10 py-20 md:py-24 flex flex-col items-center justify-center">
