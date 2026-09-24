@@ -100,9 +100,7 @@ body {
 }
 
 .ambient-orb-one {
-  top: -18%;
-  left: -12%;
-  background: #b5ff6d;
+  display: none;
 }
 
 .ambient-orb-two {
@@ -113,11 +111,7 @@ body {
 }
 
 .ambient-spotlight {
-  position: absolute;
-  inset: 0;
-  opacity: 0.7;
-  background: radial-gradient(circle 260px at var(--pointer-x) var(--pointer-y), rgba(181, 255, 109, 0.1), transparent 72%);
-  transition: opacity 0.4s ease;
+  display: none;
 }
 
 .ambient-particles {

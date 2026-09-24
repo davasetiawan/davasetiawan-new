@@ -14,6 +14,7 @@ import About from "./About";
 import ProjectsGrid from "./ProjectsGrid";
 import ExperienceTimeline from "./ExperienceTimeline";
 import CertificatesList from "./CertificatesList";
+import GalleryDrift from "./GalleryDrift";
 import ContactFooter from "./ContactFooter";
 import AdminAuth from "./admin/AdminAuth";
 import AdminPanel from "./admin/AdminPanel";
@@ -54,9 +55,8 @@ export default function Portfolio() {
   }, []);
 
   const openAdmin = useCallback(() => {
-    if (authed) setPanelOpen(true);
-    else setAuthOpen(true);
-  }, [authed]);
+    setAuthOpen(true);
+  }, []);
 
   useEffect(() => {
     const onKey = (e) => {
@@ -108,6 +108,9 @@ export default function Portfolio() {
         <div id="certificates">
           <CertificatesList />
         </div>
+        <div id="gallery">
+          <GalleryDrift />
+        </div>
         <TechMarquee />
         <div id="contact">
           <ContactFooter />
@@ -124,7 +127,7 @@ export default function Portfolio() {
         <MessageCircle size={20} />
       </a>
 
-      {authOpen && !authed ? (
+      {authOpen ? (
         <AdminAuth
           onSuccess={() => {
             setAuthed(true);
@@ -137,7 +140,11 @@ export default function Portfolio() {
 
       {panelOpen && authed ? (
         <AdminPanel
-          onClose={() => setPanelOpen(false)}
+          onClose={() => {
+            setPanelOpen(false);
+            setAuthed(false);
+            sessionStorage.removeItem("dava-admin-auth");
+          }}
           onLogout={() => {
             sessionStorage.removeItem("dava-admin-auth");
             setAuthed(false);

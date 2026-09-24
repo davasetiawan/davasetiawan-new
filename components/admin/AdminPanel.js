@@ -6,6 +6,7 @@ import {
   Download,
   FolderGit2,
   History,
+  Image,
   Inbox,
   KeyRound,
   LogOut,
@@ -31,6 +32,7 @@ const PANEL_TABS = [
   { id: "projects", label: "Projects", icon: FolderGit2 },
   { id: "experience", label: "Experience", icon: History },
   { id: "certificates", label: "Certificates", icon: BadgeCheck },
+  { id: "gallery", label: "Gallery", icon: Image },
   { id: "inbox", label: "Inbox", icon: Inbox },
   { id: "settings", label: "Settings", icon: SettingsIcon },
 ];
@@ -241,11 +243,18 @@ function CollectionEditor({ collectionKey, singular, fields, defaultItem, metaOf
 function BioHeroEditor() {
   const data = useData();
   const [draft, setDraft] = useState(() => JSON.parse(JSON.stringify(data.profile)));
+  const [rotatingText, setRotatingText] = useState(() =>
+    (data.profile.rotatingWords || [data.profile.heroHighlight || "solusi digital"]).join("\n")
+  );
   const [saved, setSaved] = useState(false);
 
   const save = () => {
+    const words = rotatingText
+      .split("\n")
+      .map((w) => w.trim())
+      .filter(Boolean);
     store.update((d) => {
-      d.profile = JSON.parse(JSON.stringify(draft));
+      d.profile = { ...JSON.parse(JSON.stringify(draft)), rotatingWords: words };
       return d;
     });
     setSaved(true);
@@ -285,6 +294,19 @@ function BioHeroEditor() {
         {text("Hero — teks sesudah highlight", "heroPost")}
         {text("URL CV / Resume (untuk banner atas)", "resumeUrl")}
       </div>
+
+      <Field label="Rotating Words — teks aksen berputar (satu per baris)">
+        <textarea
+          rows={6}
+          className="tinput resize-y font-mono text-sm"
+          placeholder={"solusi digital\nantarmuka interaktif\naplikasi modern\nsistem terukur\nproduk berdampak"}
+          value={rotatingText}
+          onChange={(e) => setRotatingText(e.target.value)}
+        />
+        <p className="mt-1 text-[11px] text-[var(--muted-foreground)]">
+          Satu kata/frasa per baris. Teks ini akan bergantian muncul dengan animasi smooth di hero section.
+        </p>
+      </Field>
 
       <Field label="Foto Profil (kartu About)">
         <ImageInput
@@ -749,6 +771,30 @@ export default function AdminPanel({ onClose, onLogout }) {
                       <p className="text-[11px] text-[var(--muted-foreground)]">
                         {item.issuer} · {item.date}
                       </p>
+                    </div>
+                  </div>
+                )}
+              />
+            ) : null}
+            {tab === "gallery" ? (
+              <CollectionEditor
+                collectionKey="gallery"
+                singular="Foto Galeri"
+                defaultItem={{ title: "", image: "", href: "" }}
+                fields={[
+                  { key: "title", label: "Judul Foto", required: true },
+                  { key: "image", label: "Gambar Foto", type: "image", required: true },
+                  { key: "href", label: "Link URL (Opsional)" },
+                ]}
+                metaOf={(item) => (
+                  <div className="flex min-w-0 items-center gap-3">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={item.image} alt="" className="h-10 w-14 shrink-0 rounded-lg border border-[var(--border)] object-cover" />
+                    <div className="min-w-0">
+                      <p className="truncate text-sm font-bold">{item.title}</p>
+                      {item.href ? (
+                        <p className="truncate text-[11px] text-[var(--muted-foreground)]">{item.href}</p>
+                      ) : null}
                     </div>
                   </div>
                 )}

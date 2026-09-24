@@ -1,6 +1,7 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { ArrowUpRight, MoveRight } from "lucide-react";
 import { useData } from "../lib/store";
 
@@ -10,17 +11,49 @@ const fadeUp = (delay) => ({
   transition: { duration: 0.7, delay, ease: [0.22, 1, 0.36, 1] },
 });
 
+function RotatingHighlight({ words: wordsProp }) {
+  const words = Array.isArray(wordsProp) && wordsProp.length > 0
+    ? wordsProp
+    : ["solusi digital"];
+
+  const [index, setIndex] = useState(0);
+
+  useEffect(() => {
+    if (words.length <= 1) return;
+    const interval = setInterval(() => {
+      setIndex((prev) => (prev + 1) % words.length);
+    }, 2800);
+    return () => clearInterval(interval);
+  }, [words.length]);
+
+  return (
+    <span className="inline-flex relative overflow-hidden align-bottom px-1 py-0.5" style={{ perspective: "1000px" }}>
+      <AnimatePresence mode="popLayout" initial={false}>
+        <motion.span
+          key={words[index] + index}
+          initial={{ y: "110%", opacity: 0, filter: "blur(12px)", rotateX: -65 }}
+          animate={{ y: "0%", opacity: 1, filter: "blur(0px)", rotateX: 0 }}
+          exit={{ y: "-110%", opacity: 0, filter: "blur(12px)", rotateX: 65 }}
+          transition={{
+            duration: 0.7,
+            ease: [0.16, 1, 0.3, 1],
+          }}
+          className="inline-block text-[var(--highlight)] drop-shadow-[0_0_25px_rgba(181,255,109,0.4)] font-semibold tracking-tight"
+          style={{ willChange: "transform, opacity, filter", transformOrigin: "50% 50% -20px" }}
+        >
+          {words[index]}
+        </motion.span>
+      </AnimatePresence>
+    </span>
+  );
+}
+
 export default function Hero() {
   const data = useData();
   const p = data.profile;
   const heroSocials = ["GitHub", "LinkedIn", "Instagram", "Email"];
 
-  
-
-
-
   return (
-
     <section
       id="home"
       className="relative w-full min-h-[92vh] pb-20 pt-36 sm:pt-40 md:pt-44 md:pb-24 overflow-hidden"
@@ -45,9 +78,7 @@ export default function Hero() {
             className="max-w-5xl select-none font-display text-4xl sm:text-6xl lg:text-7xl font-medium leading-[1.08] tracking-tight"
           >
             {p.heroPre}{" "}
-            <span className="inline-block origin-left text-[var(--highlight)] drop-shadow-sm transition-transform duration-300 hover:scale-[1.02]">
-              {p.heroHighlight}
-            </span>{" "}
+            <RotatingHighlight words={p.rotatingWords?.length ? p.rotatingWords : [p.heroHighlight || "solusi digital"]} />{" "}
             {p.heroPost}
           </motion.h1>
 

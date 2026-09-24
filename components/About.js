@@ -38,8 +38,9 @@ function TechChip({ tech }) {
 
 export default function About() {
   const data = useData();
-  const p = data.profile;
-  const techStack = data.techStack || [];
+  const p = data?.profile || {};
+  const techStack = data?.techStack || [];
+  const aboutHeadline = p.aboutHeadline || "Developer Web Full-Stack pemula yang berdedikasi dan memiliki minat tinggi di bidang teknologi";
 
   return (
     <section
@@ -66,7 +67,7 @@ export default function About() {
 
           <h2 className="font-display text-3xl font-medium leading-[1.15] md:text-5xl">
             <WordReveal
-              text={p.aboutHeadline}
+              text={aboutHeadline}
               className="inline-block font-semibold leading-snug"
             />
           </h2>

@@ -1,6 +1,9 @@
 import { supabaseServer } from "../../../lib/supabase";
 import SEED from "../../../lib/seed";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 const SINGLE_ID = 1;
 
 function json(data, status = 200) {
@@ -10,7 +13,7 @@ function json(data, status = 200) {
   });
 }
 
-function toPayload(body) {
+function toPayload(body = {}) {
   return {
     id: SINGLE_ID,
     profile: body.profile ?? SEED.profile,
@@ -20,6 +23,7 @@ function toPayload(body) {
     projects: body.projects ?? SEED.projects,
     experience: body.experience ?? SEED.experience,
     certificates: body.certificates ?? SEED.certificates,
+    gallery: Array.isArray(body.gallery) ? body.gallery : [],
     messages: body.messages ?? SEED.messages,
     settings: body.settings ?? SEED.settings,
     updated_at: new Date().toISOString(),
@@ -29,60 +33,82 @@ function toPayload(body) {
 function fromRow(row) {
   if (!row) return null;
   return {
-    profile: row.profile,
-    skills: row.skills,
-    marquee: row.marquee,
-    techStack: row.tech_stack,
-    projects: row.projects,
-    experience: row.experience,
-    certificates: row.certificates,
-    messages: row.messages,
-    settings: row.settings,
+    profile: row.profile ?? SEED.profile,
+    skills: row.skills ?? SEED.skills,
+    marquee: row.marquee ?? SEED.marquee,
+    techStack: row.tech_stack ?? row.techStack ?? SEED.techStack,
+    projects: row.projects ?? SEED.projects,
+    experience: row.experience ?? SEED.experience,
+    certificates: row.certificates ?? SEED.certificates,
+    gallery: Array.isArray(row.gallery) ? row.gallery : [],
+    messages: row.messages ?? SEED.messages,
+    settings: row.settings ?? SEED.settings,
   };
 }
 
 export async function GET() {
-  const supabase = supabaseServer();
-  const { data, error } = await supabase
-    .from("content")
-    .select("*")
-    .eq("id", SINGLE_ID)
-    .maybeSingle();
-
-  if (error) return json({ error: error.message }, 500);
-
-  if (!data) {
-    const { data: seeded, error: seedError } = await supabase
+  try {
+    const supabase = supabaseServer();
+    const { data: row, error } = await supabase
       .from("content")
-      .upsert(toPayload(SEED))
-      .select()
+      .select("*")
+      .eq("id", SINGLE_ID)
       .single();
-    if (seedError) return json({ error: seedError.message }, 500);
-    return json(fromRow(seeded));
-  }
 
-  return json(fromRow(data));
+    if (error) {
+      console.error("Supabase GET error:", error.message);
+      return json(fromRow(SEED));
+    }
+
+    return json(fromRow(row));
+  } catch (err) {
+    console.error("GET fatal error:", err.message);
+    return json(fromRow(SEED));
+  }
 }
 
 export async function PUT(req) {
-  const supabase = supabaseServer();
-  const body = await req.json();
-  const { data, error } = await supabase
-    .from("content")
-    .upsert(toPayload(body))
-    .select()
-    .single();
-  if (error) return json({ error: error.message }, 500);
-  return json(fromRow(data));
+  try {
+    const body = await req.json();
+    const payload = toPayload(body);
+
+    const supabase = supabaseServer();
+    const { data: row, error } = await supabase
+      .from("content")
+      .upsert(payload, { onConflict: "id" })
+      .select()
+      .single();
+
+    if (error) {
+      console.error("Supabase PUT error:", error.message);
+      return json({ error: error.message }, 500);
+    }
+
+    return json(fromRow(row));
+  } catch (err) {
+    console.error("PUT fatal error:", err.message);
+    return json({ error: err.message }, 500);
+  }
 }
 
 export async function DELETE() {
-  const supabase = supabaseServer();
-  const { data, error } = await supabase
-    .from("content")
-    .upsert(toPayload(SEED))
-    .select()
-    .single();
-  if (error) return json({ error: error.message }, 500);
-  return json(fromRow(data));
+  try {
+    const payload = toPayload(SEED);
+    const supabase = supabaseServer();
+    const { data: row, error } = await supabase
+      .from("content")
+      .upsert(payload, { onConflict: "id" })
+      .select()
+      .single();
+
+    if (error) {
+      console.error("Supabase DELETE/reset error:", error.message);
+      return json({ error: error.message }, 500);
+    }
+
+    return json(fromRow(row));
+  } catch (err) {
+    console.error("DELETE fatal error:", err.message);
+    return json({ error: err.message }, 500);
+  }
 }
