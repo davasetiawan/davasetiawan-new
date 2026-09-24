@@ -31,12 +31,17 @@ export async function POST(req) {
 
     const supabase = supabaseServer();
 
+    // Pastikan bucket "images" ada (create if missing)
+    try {
+      await supabase.storage.createBucket(BUCKET, { public: true });
+    } catch {}
+
     // Upload ke Supabase Storage
     const { data, error } = await supabase.storage
       .from(BUCKET)
       .upload(path, buffer, {
         contentType: file.type || "image/jpeg",
-        upsert: false,
+        upsert: true,
       });
 
     if (error) {

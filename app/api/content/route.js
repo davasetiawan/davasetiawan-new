@@ -67,12 +67,70 @@ export async function GET() {
   }
 }
 
+async function extractAndUploadBase64(obj, supabase) {
+  if (!obj) return obj;
+  if (typeof obj === "string") {
+    if (obj.startsWith("data:image/")) {
+      try {
+        const matches = obj.match(/^data:(image\/[a-zA-Z]+);base64,(.+)$/);
+        if (matches) {
+          const contentType = matches[1];
+          const ext = contentType.split("/")[1] || "jpeg";
+          const buffer = Buffer.from(matches[2], "base64");
+          const filename = `uploads/auto-${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
+
+          try {
+            await supabase.storage.createBucket("images", { public: true });
+          } catch {}
+
+          const { data, error } = await supabase.storage
+            .from("images")
+            .upload(filename, buffer, { contentType, upsert: true });
+
+          if (!error && data?.path) {
+            const { data: publicUrlData } = supabase.storage
+              .from("images")
+              .getPublicUrl(data.path);
+            return publicUrlData.publicUrl;
+          }
+        }
+      } catch (err) {
+        console.error("Auto upload base64 error:", err.message);
+      }
+    }
+    return obj;
+  }
+
+  if (Array.isArray(obj)) {
+    const list = [];
+    for (const item of obj) {
+      list.push(await extractAndUploadBase64(item, supabase));
+    }
+    return list;
+  }
+
+  if (typeof obj === "object") {
+    const out = {};
+    for (const key of Object.keys(obj)) {
+      out[key] = await extractAndUploadBase64(obj[key], supabase);
+    }
+    return out;
+  }
+
+  return obj;
+}
+
 export async function PUT(req) {
   try {
     const body = await req.json();
-    const payload = toPayload(body);
+    let payload = toPayload(body);
 
     const supabase = supabaseServer();
+
+    // Otomatis ekstrak & upload semua gambar base64 ke Supabase Storage
+    // agar ukuran JSON payload database menjadi sangat kecil dan tidak terkena timeout
+    payload = await extractAndUploadBase64(payload, supabase);
+
     const { data: row, error } = await supabase
       .from("content")
       .upsert(payload, { onConflict: "id" })
