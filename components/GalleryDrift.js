@@ -1,6 +1,7 @@
 "use client";
 
 import SectionBadge from "./SectionBadge";
+import DriftWall from "./DriftWall";
 import { useMemo } from "react";
 import { useData } from "../lib/store";
 
