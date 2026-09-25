@@ -125,7 +125,7 @@ export default function ProjectsGrid() {
                   <img
                     src={prevProject.imageUrl}
                     alt={prevProject.title}
-                    className="h-full w-full object-contain"
+                    className="h-full w-full object-cover object-top"
                     draggable={false}
                   />
                 </div>
@@ -187,7 +187,7 @@ export default function ProjectsGrid() {
                   <img
                     src={activeProject.imageUrl}
                     alt={activeProject.title}
-                    className="h-full w-full object-contain select-none"
+                    className="h-full w-full object-cover object-top select-none"
                     draggable={false}
                   />
 
@@ -270,7 +270,7 @@ export default function ProjectsGrid() {
                   <img
                     src={nextProject.imageUrl}
                     alt={nextProject.title}
-                    className="h-full w-full object-contain"
+                    className="h-full w-full object-cover object-top"
                     draggable={false}
                   />
                 </div>
