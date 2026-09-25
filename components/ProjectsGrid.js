@@ -117,15 +117,12 @@ export default function ProjectsGrid() {
                   pointerEvents: "none",
                 }}
               >
-                <div
-                  className="w-full bg-[#1a1a1a] flex items-center justify-center"
-                  style={{ aspectRatio: "16/10" }}
-                >
+                <div className="w-full bg-[#1a1a1a]">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={prevProject.imageUrl}
                     alt={prevProject.title}
-                    className="h-full w-full object-cover object-top"
+                    className="w-full h-auto block"
                     draggable={false}
                   />
                 </div>
@@ -179,25 +176,14 @@ export default function ProjectsGrid() {
                 </div>
 
                 {/* Screenshot */}
-                <div
-                  className="group relative w-full bg-[#050506] flex items-center justify-center overflow-hidden cursor-pointer"
-                  style={{ aspectRatio: "16/10" }}
-                >
+                <div className="relative w-full bg-[#050506] overflow-hidden">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={activeProject.imageUrl}
                     alt={activeProject.title}
-                    className="absolute left-0 top-0 w-full h-auto min-h-full object-cover object-top select-none transition-all duration-1000 ease-out group-hover:top-full group-hover:-translate-y-full group-hover:duration-[6500ms] group-hover:ease-in-out"
-                    style={{
-                      transitionProperty: "top, transform",
-                    }}
+                    className="w-full h-auto block select-none"
                     draggable={false}
                   />
-
-                  {/* HOVER TO SCROLL HINT */}
-                  <span className="pointer-events-none absolute top-3 left-3 z-20 flex items-center gap-1.5 rounded-md bg-black/70 backdrop-blur-md px-2.5 py-1 font-mono text-[9.5px] uppercase tracking-widest text-white/80 border border-white/10 opacity-75 transition-opacity duration-300 group-hover:opacity-0">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#b5ff6d] animate-pulse" /> HOVER TO SCROLL
-                  </span>
 
                   {/* OPEN PREVIEW */}
                   {(activeProject.demoUrl || activeProject.repoUrl) && (
@@ -270,15 +256,12 @@ export default function ProjectsGrid() {
                   pointerEvents: "none",
                 }}
               >
-                <div
-                  className="w-full bg-[#1a1a1a] flex items-center justify-center"
-                  style={{ aspectRatio: "16/10" }}
-                >
+                <div className="w-full bg-[#1a1a1a]">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={nextProject.imageUrl}
                     alt={nextProject.title}
-                    className="h-full w-full object-cover object-top"
+                    className="w-full h-auto block"
                     draggable={false}
                   />
                 </div>
