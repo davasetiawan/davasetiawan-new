@@ -259,6 +259,7 @@ const DriftWall = ({
       itemFit === 'contain' ? 'object-contain p-1.5' : 'object-cover',
       '[filter:grayscale(var(--dw-gray))_saturate(0.92)]',
       'transition-[filter] duration-[420ms] ease-[cubic-bezier(0.22,1,0.36,1)]',
+      'group-hover/tile:[filter:grayscale(0)_saturate(1.05)]',
       'group-[.is-active]/tile:[filter:grayscale(0)_saturate(1.05)] group-focus-visible/tile:[filter:grayscale(0)_saturate(1.05)]'
     );
 
@@ -279,6 +280,8 @@ const DriftWall = ({
       className: cx(tileClass, activeId === id && 'is-active'),
       'data-tile-id': id,
       'data-col': colIndex,
+      onMouseEnter: () => activate(id, colIndex),
+      onMouseLeave: release,
       onFocus: () => activate(id, colIndex),
       onBlur: release
     };
