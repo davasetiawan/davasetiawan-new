@@ -83,7 +83,7 @@ const DriftWall = ({
     const unit = tileHeight + gap;
     return columnItems.map(col => {
       const copyHeight = Math.max(unit, col.length * unit);
-      const copies = Math.max(2, Math.ceil((containerHeight * 1.6) / copyHeight) + 1);
+      const copies = Math.max(3, Math.ceil((containerHeight * 2.5) / copyHeight) + 2);
       return { copyHeight, copies };
     });
   }, [columnItems, tileHeight, gap, containerHeight]);
@@ -117,6 +117,10 @@ const DriftWall = ({
     (px, py) => {
       const plane = planeRef.current;
       if (!plane) return;
+      if (tilt === 0 && turn === 0 && depth === 0 && roll === 0) {
+        plane.style.transform = `translate(-50%, -50%) scale(1.05)`;
+        return;
+      }
       plane.style.transform =
         `translate(-50%, -50%) scale(1.18) ` +
         `rotateX(${tilt + py}deg) rotateY(${turn + px}deg) rotateZ(${roll}deg) ` +
@@ -186,6 +190,14 @@ const DriftWall = ({
     setActiveId(null);
   }, []);
 
+  const handleTileMouseEnter = useCallback((index) => {
+    hoveredColRef.current = index;
+  }, []);
+
+  const handleTileMouseLeave = useCallback(() => {
+    hoveredColRef.current = -1;
+  }, []);
+
   const handlePointerMove = useCallback(
     e => {
       const rect = containerRef.current?.getBoundingClientRect();
@@ -229,25 +241,25 @@ const DriftWall = ({
   );
   const innerClass = cx(
     'pointer-events-none absolute inset-[calc(var(--dw-gap)/2)] block overflow-hidden bg-[#0b0b12]',
-    'rounded-[var(--dw-radius)] opacity-[var(--dw-dim)] [transform:translateZ(0)]',
-    'transition-[transform,opacity,box-shadow] duration-[420ms] ease-[cubic-bezier(0.22,1,0.36,1)]',
+    'rounded-[var(--dw-radius)] opacity-[var(--dw-dim)] [transform:translateZ(0)] transform-gpu',
+    'transition-[transform,opacity,box-shadow] duration-300 ease-out',
     'group-hover/tile:opacity-100 group-hover/tile:[transform:translateZ(var(--dw-lift))]',
-    'group-hover/tile:shadow-[0_24px_60px_-18px_rgba(0,0,0,0.7)]',
+    'group-hover/tile:shadow-[0_20px_50px_-15px_rgba(0,0,0,0.8)]',
     'group-[.is-active]/tile:opacity-100 group-[.is-active]/tile:[transform:translateZ(var(--dw-lift))]',
-    'group-[.is-active]/tile:shadow-[0_24px_60px_-18px_rgba(0,0,0,0.7)]',
+    'group-[.is-active]/tile:shadow-[0_20px_50px_-15px_rgba(0,0,0,0.8)]',
     'group-focus-visible/tile:opacity-100 group-focus-visible/tile:[transform:translateZ(var(--dw-lift))]',
-    'group-focus-visible/tile:shadow-[0_24px_60px_-18px_rgba(0,0,0,0.7),0_0_0_2px_rgba(255,255,255,0.9)]'
+    'group-focus-visible/tile:shadow-[0_20px_50px_-15px_rgba(0,0,0,0.8),0_0_0_2px_rgba(255,255,255,0.9)]'
   );
   const imgClass = cx(
     'block h-full w-full select-none object-cover',
     '[filter:grayscale(var(--dw-gray))_saturate(0.92)]',
-    'transition-[filter] duration-[420ms] ease-[cubic-bezier(0.22,1,0.36,1)]',
+    'transition-[filter] duration-300 ease-out',
     'group-hover/tile:[filter:grayscale(0)_saturate(1.05)]',
     'group-[.is-active]/tile:[filter:grayscale(0)_saturate(1.05)] group-focus-visible/tile:[filter:grayscale(0)_saturate(1.05)]'
   );
   const overlayClass = cx(
     'pointer-events-none absolute inset-0 bg-[var(--dw-overlay)] opacity-[0.42]',
-    'transition-opacity duration-[420ms] ease-[cubic-bezier(0.22,1,0.36,1)]',
+    'transition-opacity duration-300 ease-out',
     'group-hover/tile:opacity-0',
     'group-[.is-active]/tile:opacity-0 group-focus-visible/tile:opacity-0'
   );
@@ -255,10 +267,10 @@ const DriftWall = ({
   const renderTile = (item, id, colIndex) => {
     const itemFit = item.fit || fit || 'contain';
     const tileImgClass = cx(
-      'block h-full w-full select-none',
+      'block h-full w-full select-none transform-gpu',
       itemFit === 'contain' ? 'object-contain p-1.5' : 'object-cover',
       '[filter:grayscale(var(--dw-gray))_saturate(0.92)]',
-      'transition-[filter] duration-[420ms] ease-[cubic-bezier(0.22,1,0.36,1)]',
+      'transition-[filter] duration-300 ease-out',
       'group-hover/tile:[filter:grayscale(0)_saturate(1.05)]',
       'group-[.is-active]/tile:[filter:grayscale(0)_saturate(1.05)] group-focus-visible/tile:[filter:grayscale(0)_saturate(1.05)]'
     );
@@ -280,8 +292,8 @@ const DriftWall = ({
       className: cx(tileClass, activeId === id && 'is-active'),
       'data-tile-id': id,
       'data-col': colIndex,
-      onMouseEnter: () => activate(id, colIndex),
-      onMouseLeave: release,
+      onMouseEnter: () => handleTileMouseEnter(colIndex),
+      onMouseLeave: handleTileMouseLeave,
       onFocus: () => activate(id, colIndex),
       onBlur: release
     };
