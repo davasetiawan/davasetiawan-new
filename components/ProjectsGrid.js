@@ -89,7 +89,7 @@ export default function ProjectsGrid() {
       <div className="relative w-full overflow-hidden" style={{ perspective: "1600px" }}>
         <div
           className="relative flex items-center justify-center"
-          style={{ minHeight: "clamp(280px, 42vw, 580px)" }}
+          style={{ minHeight: "clamp(240px, 36vw, 500px)" }}
         >
           {/* LEFT GHOST */}
           {projects.length > 1 && (
@@ -97,11 +97,11 @@ export default function ProjectsGrid() {
               onClick={handlePrev}
               className="absolute hidden sm:block cursor-pointer select-none"
               style={{
-                width: "min(1040px, 92%)",
+                width: "min(840px, 84%)",
                 left: "50%",
                 top: "50%",
                 transform: "translate(-50%, -50%)",
-                marginLeft: "-38%",
+                marginLeft: "-35%",
                 zIndex: 10,
               }}
             >
@@ -148,7 +148,7 @@ export default function ProjectsGrid() {
               }}
               transition={{ duration: 0.44, ease: [0.22, 1, 0.36, 1] }}
               className="relative z-30"
-              style={{ width: "min(1040px, 92%)" }}
+              style={{ width: "min(840px, 84%)" }}
             >
               {/* Screen frame */}
               <div
@@ -236,11 +236,11 @@ export default function ProjectsGrid() {
               onClick={handleNext}
               className="absolute hidden sm:block cursor-pointer select-none"
               style={{
-                width: "min(1040px, 92%)",
+                width: "min(840px, 84%)",
                 left: "50%",
                 top: "50%",
                 transform: "translate(-50%, -50%)",
-                marginLeft: "38%",
+                marginLeft: "35%",
                 zIndex: 10,
               }}
             >
